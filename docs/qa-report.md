@@ -38,7 +38,7 @@
 Кожна сторінка — `шлях/index.html`, старі URL відкриваються за тим самим шляхом (SEO/зовнішні посилання не ламаються). Внутрішня навігація — **відносна** (працює на `*.github.io/repo/`, кастомному домені й локально).
 
 ### 4. Мережа (DevTools)
-Лише `localhost` + дозволені зовнішні (не-Webflow): Google Fonts (через webfont.js, protocol-relative → на HTTPS стане `https`), Google Tag Manager/gtag (`GTM-WFQCCNH`, лишено), Leaflet з `unpkg.com` і тайли з `gyborg.github.io`.
+Лише власний домен + дозволені зовнішні (не-Webflow): Google Fonts (через webfont.js, protocol-relative → на HTTPS стає `https`) і Google Tag Manager/gtag (`GTM-WFQCCNH`, лишено за проханням). Leaflet і тайли карти вантажаться зі свого ж домену (`/static/`).
 
 ## Відомі обмеження / пре-існуючі дефекти (не Webflow-специфічні)
 
