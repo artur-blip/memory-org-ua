@@ -58,6 +58,21 @@ def fix_add_story_simple(t):
     return re.sub(r'(<a\b[^>]*href=")([^"]*)("[^>]*class="nav-link[^"]*"[^>]*>)(.*?)(</a>)',
                   repl, t, flags=re.S)
 
+def localize_map(t):
+    """Point the Leaflet map at local tiles + local Leaflet (was gyborg.github.io / unpkg.com).
+    Only applies to some-map/index.html, which sits one level below the site root."""
+    # tiles
+    t = t.replace('https://gyborg.github.io/map/tiles/{z}/{x}/{y}.png',
+                  '../static/map-tiles/{z}/{x}/{y}.png')
+    # leaflet css
+    t = re.sub(r'<link\b[^>]*href="https://unpkg\.com/leaflet[^"]*\.css"[^>]*>',
+               '<link href="../static/leaflet/leaflet.css" rel="stylesheet"/>', t)
+    # leaflet js: the page loads it twice (unpinned + pinned) — collapse to one local copy
+    scripts = re.findall(r'<script\b[^>]*src="https://unpkg\.com/leaflet[^"]*"[^>]*>\s*</script>', t)
+    for i, s in enumerate(scripts):
+        t = t.replace(s, '<script src="../static/leaflet/leaflet.js"></script>' if i == 0 else '', 1)
+    return t
+
 def write_404():
     html = '''<!DOCTYPE html>
 <html lang="uk">
@@ -116,6 +131,8 @@ def main():
             continue
         tt = open(f, encoding='utf-8').read()
         new = fix_add_story_simple(tt)
+        if os.path.basename(os.path.dirname(f)) == 'some-map':
+            new = localize_map(new)
         if new != tt:
             open(f, 'w', encoding='utf-8').write(new); changed += 1
     print(f'add-story mailto applied to homepage + {changed} other pages')

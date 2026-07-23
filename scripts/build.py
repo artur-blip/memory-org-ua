@@ -148,7 +148,7 @@ def neutralize_js(text):
 # ---------------------------------------------------------------- main
 def main():
     # Remove only generated content; preserve repo meta, docs, scripts, git history.
-    PRESERVE = {'.git', '.gitignore', '.nojekyll', 'docs', 'scripts', 'README.md'}
+    PRESERVE = {'.git', '.gitignore', '.nojekyll', 'docs', 'scripts', 'README.md', 'static'}
     os.makedirs(SITE, exist_ok=True)
     for entry in os.listdir(SITE):
         if entry in PRESERVE:
