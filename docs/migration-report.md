@@ -57,7 +57,7 @@ cd ~/memory-org-ua/site && gh repo create memory-org-ua --public --source=. --re
 **Крок 3 — увімкніть Pages:** Settings → Pages → Source **Deploy from a branch** → Branch **main**, папка **/(root)** → Save.
 > GitHub Pages віддає сайт лише з `/(root)` або `/docs` — теки `/site` немає. Тому вміст сайту лежить у **корені** репозиторію, а звіти — в `docs/`.
 
-Далі сайт відкриється на `https://<username>.github.io/memory-org-ua/` — перевірте роботу (ще до зміни DNS).
+Далі сайт відкриється на `https://artur-blip.github.io/memory-org-ua/` — перевірте роботу (ще до зміни DNS).
 
 ## 5. Інструкція зі зміни DNS (робите ви, у реєстратора)
 
@@ -74,9 +74,9 @@ A   @   185.199.111.153
 
 **B) `www` → GitHub Pages:**
 ```
-CNAME   www   <username>.github.io.
+CNAME   www   artur-blip.github.io.
 ```
-(`<username>` — ваш GitHub-логін.)
+(`artur-blip` — ваш GitHub-логін.)
 
 > Файл `CNAME` містить `www.memory.org.ua` — тобто канонічний домен — **www**, apex редіректить на www. Хочете навпаки (apex головний) — скажіть, поміняю `CNAME` на `memory.org.ua`.
 
