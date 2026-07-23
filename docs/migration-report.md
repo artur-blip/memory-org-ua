@@ -1,8 +1,8 @@
 # Фінальний звіт: міграція memory.org.ua з Webflow на GitHub Pages
 
 **Дата:** 2026-07-23
-**Статус:** ✅ **задеплоєно і працює** — https://artur-blip.github.io/memory-org-ua/
-Лишилось: змінити DNS (розділ 5) і повернути `CNAME` (розділ 4).
+**Статус:** ✅ **МІГРАЦІЮ ЗАВЕРШЕНО** — сайт працює на https://www.memory.org.ua/ (GitHub Pages, HTTPS).
+Лишилось одне: **скасувати підписку Webflow — але не раніше ніж через тиждень стабільної роботи** (розділ 6).
 
 ---
 
@@ -51,24 +51,24 @@
 
 Перевірено на живому сайті: головна, `/some-map/` (Leaflet-карта з тайлами й маркерами), сторінки `map/…`, `osnovni-statti/…`, `dodatkovi-statti/…`, колекції, кастомна 404, CSS/jQuery/зображення — усе віддається по HTTPS.
 
-### ⚠️ Про файл `CNAME` (важливо для порядку дій)
+### `CNAME` — відновлено ✅
 
-Зараз файл `CNAME` **тимчасово прибрано** з репозиторію. Причина: коли `CNAME` присутній, GitHub Pages редіректить `*.github.io` на `www.memory.org.ua` — а він поки що вказує на Webflow, тож попередній перегляд був би неможливий.
+Файл `CNAME` = `www.memory.org.ua` повернуто в репозиторій, кастомний домен активний у налаштуваннях Pages.
 
-**Повернути `CNAME` треба після зміни DNS.** Два способи:
+## 5. DNS — виконано ✅
 
-*Спосіб 1 (через інтерфейс, найпростіший):* Settings → Pages → **Custom domain** → введіть `www.memory.org.ua` → **Save**. GitHub сам створить файл `CNAME` у репозиторії.
+DNS переключено і перевірено (`dig`):
 
-*Спосіб 2 (командою):*
-```bash
-cd ~/memory-org-ua/site
-echo "www.memory.org.ua" > CNAME
-git add CNAME && git commit -m "Restore CNAME for custom domain" && git push
-```
+| Запис | Значення | Стан |
+|---|---|---|
+| `www` CNAME | `artur-blip.github.io` | ✅ |
+| `@` (apex) A ×4 | `185.199.108–111.153` | ✅ |
+| `archive` | `165.232.124.164` (окремий сервер) | ✅ недоторканий |
 
-## 5. Інструкція зі зміни DNS (робите ви, у реєстратора)
+Перевірено редіректи: `http://www` → `https://www`, `http://memory.org.ua` → `https://www.memory.org.ua`, `https://memory.org.ua` → `https://www.memory.org.ua`.
+Сертифікат: **Let's Encrypt**, дійсний до 21.10.2026. **Enforce HTTPS — увімкнено.**
 
-Коли перевірили `*.github.io` — переходьте на кастомний домен. У DNS `memory.org.ua`:
+<details><summary>Записи, які було встановлено (для довідки)</summary>
 
 **A) Apex `memory.org.ua` → 4 A-записи GitHub Pages:**
 ```
@@ -87,16 +87,13 @@ CNAME   www   artur-blip.github.io.
 
 > Файл `CNAME` містить `www.memory.org.ua` — тобто канонічний домен — **www**, apex редіректить на www. Хочете навпаки (apex головний) — скажіть, поміняю `CNAME` на `memory.org.ua`.
 
-**C) Enforce HTTPS:** у Settings → Pages, коли домен підтвердиться і випуститься сертифікат (до ~24 год), поставте галочку **Enforce HTTPS**.
-
-**Обережно:** приберіть старі A/CNAME на Webflow для `@` і `www`. **Не чіпайте** запис `archive` (окремий проєкт).
+</details>
 
 ## 6. Порядок дій і застереження
 
 1. ✅ Задеплоєно й перевірено на `*.github.io`.
-2. Змінити DNS (розділ 5). Поширення — від хвилин до 24–48 год.
-2a. Повернути `CNAME` = `www.memory.org.ua` (розділ 4).
-3. Дочекатися HTTPS-сертифіката й увімкнути **Enforce HTTPS**.
+2. ✅ DNS змінено, `CNAME` повернуто.
+3. ✅ Сертифікат випущено, Enforce HTTPS увімкнено.
 4. **Не скасовуйте підписку Webflow одразу.** Лише **після** зміни DNS і **щонайменше тижня** стабільної роботи на GitHub Pages.
 
 ## 7. Критерії готовності
@@ -108,6 +105,8 @@ CNAME   www   artur-blip.github.io.
 - [x] Назви «Історичних періодів» на головній виправлені (12/12)
 - [x] `404.html`, `CNAME`, `qa-report.md`, `inventory.md`, `migration-report.md` на місці
 - [x] Задеплоєно на GitHub Pages і перевірено на `*.github.io`
-- [ ] DNS переключено (робите ви — розділ 5)
-- [ ] Повернуто `CNAME` після зміни DNS (розділ 4)
-- [ ] Увімкнено Enforce HTTPS (розділ 5C)
+- [x] DNS переключено на GitHub Pages; `archive` не зачеплено
+- [x] Повернуто `CNAME` = `www.memory.org.ua`
+- [x] Увімкнено Enforce HTTPS (Let's Encrypt, до 21.10.2026)
+- [x] Сайт працює на https://www.memory.org.ua/ (усі сторінки 200, 404 коректна)
+- [ ] **Скасувати підписку Webflow — не раніше ніж через тиждень стабільної роботи**
